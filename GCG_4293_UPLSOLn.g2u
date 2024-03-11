@@ -1,0 +1,636 @@
+Program.Sub.ScreenSU.Start
+Gui.frmUpload..create
+Gui.frmUpload..caption("Select File")
+Gui.frmUpload..size(4290,2085)
+Gui.frmUpload..minx(0)
+Gui.frmUpload..miny(0)
+Gui.frmUpload..position(0,0)
+Gui.frmUpload..event(UnLoad,frmupload_unload)
+Gui.frmUpload..alwaysontop(False)
+Gui.frmUpload..fontname("Arial")
+Gui.frmUpload..fontsize(8)
+Gui.frmUpload..forecolor(0)
+Gui.frmUpload..fontstyle(,,,)
+Gui.frmUpload..BackColor(-2147483633)
+Gui.frmUpload..controlbox(True)
+Gui.frmUpload..maxbutton(False)
+Gui.frmUpload..minbutton(False)
+Gui.frmUpload..mousepointer(0)
+Gui.frmUpload..moveable(True)
+Gui.frmUpload..sizeable(False)
+Gui.frmUpload..ShowInTaskBar(True)
+Gui.frmUpload..titlebar(True)
+Gui.frmUpload.lbl1.create(label,"Upload File",True,1935,255,1,200,200,True,0,Arial,8,-2147483633,0)
+Gui.frmUpload.lbl1.defaultvalue("")
+Gui.frmUpload.lbl1.controlgroup(0)
+Gui.frmUpload.txtUplFile.create(textbox,"",True,3105,300,0,200,400,False,0,Arial,8,-2147483643,1)
+Gui.frmUpload.txtUplFile.defaultvalue("")
+Gui.frmUpload.txtUplFile.controlgroup(0)
+Gui.frmUpload.cmdBrwsFile.create(button)
+Gui.frmUpload.cmdBrwsFile.caption("^")
+Gui.frmUpload.cmdBrwsFile.visible(True)
+Gui.frmUpload.cmdBrwsFile.size(375,375)
+Gui.frmUpload.cmdBrwsFile.zorder(0)
+Gui.frmUpload.cmdBrwsFile.position(3445,390)
+Gui.frmUpload.cmdBrwsFile.enabled(True)
+Gui.frmUpload.cmdBrwsFile.fontname("Arial")
+Gui.frmUpload.cmdBrwsFile.fontsize(8)
+Gui.frmUpload.cmdBrwsFile.event(Click,cmdbrwsfile_click)
+Gui.frmUpload.cmdBrwsFile.defaultvalue("")
+Gui.frmUpload.cmdBrwsFile.controlgroup(0)
+Gui.frmUpload.cmdUpload.create(button)
+Gui.frmUpload.cmdUpload.caption("Ok")
+Gui.frmUpload.cmdUpload.visible(True)
+Gui.frmUpload.cmdUpload.size(855,375)
+Gui.frmUpload.cmdUpload.zorder(0)
+Gui.frmUpload.cmdUpload.position(200,980)
+Gui.frmUpload.cmdUpload.enabled(True)
+Gui.frmUpload.cmdUpload.fontname("Arial")
+Gui.frmUpload.cmdUpload.fontsize(8)
+Gui.frmUpload.cmdUpload.event(Click,cmdupload_click)
+Gui.frmUpload.cmdUpload.defaultvalue("")
+Gui.frmUpload.cmdUpload.controlgroup(0)
+Gui.frmUpload.cmdClear.create(button)
+Gui.frmUpload.cmdClear.caption("Clear")
+Gui.frmUpload.cmdClear.visible(True)
+Gui.frmUpload.cmdClear.size(855,375)
+Gui.frmUpload.cmdClear.zorder(0)
+Gui.frmUpload.cmdClear.position(1150,980)
+Gui.frmUpload.cmdClear.enabled(True)
+Gui.frmUpload.cmdClear.fontname("Arial")
+Gui.frmUpload.cmdClear.fontsize(8)
+Gui.frmUpload.cmdClear.event(Click,cmdclear_click)
+Gui.frmUpload.cmdClear.defaultvalue("")
+Gui.frmUpload.cmdClear.controlgroup(0)
+Gui.frmUpload.cmderr.create(button)
+Gui.frmUpload.cmderr.caption("Error")
+Gui.frmUpload.cmderr.visible(True)
+Gui.frmUpload.cmderr.size(855,375)
+Gui.frmUpload.cmderr.zorder(0)
+Gui.frmUpload.cmderr.position(2975,980)
+Gui.frmUpload.cmderr.enabled(False)
+Gui.frmUpload.cmderr.fontname("Arial")
+Gui.frmUpload.cmderr.fontsize(8)
+Gui.frmUpload.cmderr.event(Click,cmderr_click)
+Gui.frmUpload.cmderr.defaultvalue("")
+Gui.frmUpload.cmderr.controlgroup(0)
+Program.Sub.ScreenSU.End
+
+Program.Sub.Preflight.Start
+Variable.Global.sFileName.Declare(String)
+
+Variable.UDT.uCol.Define("Part",String)
+Variable.UDT.uCol.Define("Qty",String)
+Variable.UDT.uCol.Define("Description",String)
+Variable.UDT.uCol.Define("UM",String)
+Variable.UDT.uCol.Define("Price",String)
+Variable.UDT.uCol.Define("PL",String)
+Variable.UDT.uCol.Define("Line",String)
+Variable.UDT.uCol.Define("Order_No",String)
+Variable.UDT.uCol.Define("Customer",String)
+Variable.UDT.uCol.Define("ITEM_PROMISE_DT",date)
+Variable.UDT.uCol.Define("CUSTOMER_PART",String)
+Variable.uGlobal.uCol.Declare("uCol")
+
+
+Variable.Global.sSO.Declare(String)
+
+
+Variable.UDT.UError.Define("Line",String)
+Variable.UDT.UError.Define("Part",String)
+Variable.uGlobal.UError.Declare("UError")
+Program.Sub.Preflight.End
+
+Program.Sub.Main.Start
+F.Intrinsic.Control.SetErrorHandler("Main_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+	
+		
+'Code by RAN
+
+
+
+'rename script 3 button
+'F.Intrinsic.Control.If(V.Caller.Hook,=,11560)
+F.Intrinsic.Control.If(V.Caller.Hook,=,12010)
+'	V.Passed.000203.Set("Import Lines")
+	V.Passed.000162.Set("Import Lines")
+	F.Intrinsic.Control.End
+
+'Lines  Hook
+F.Intrinsic.Control.elseIf(V.Caller.Hook,=,11810)
+	F.Intrinsic.String.LPad(V.Passed.000006,"0",7,Variable.Passed.GLOBAL)
+	F.Intrinsic.Control.End
+
+'script1
+F.Intrinsic.Control.elseIf(V.Caller.Hook,=,12410)
+	'open connection
+	F.ODBC.Connection!con.OpenConnection(V.Ambient.PDSN,V.Ambient.PUser,V.Ambient.PPass)
+'show selection screen
+	Gui.frmUpload..Show
+
+F.Intrinsic.Control.else
+	F.Intrinsic.Control.End
+
+F.Intrinsic.Control.EndIf
+
+
+
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Main_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_4293_UPLSOLn.gas",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.Main.End
+
+Program.Sub.cmdbrwsfile_click.Start
+F.Intrinsic.Control.SetErrorHandler("cmdbrwsfile_click_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+
+V.Local.sFile.Declare(String)
+V.Local.sSO.Declare(String)
+'Browse for file to upload from
+F.Intrinsic.String.LPad(V.Passed.000003,"0",7,V.Local.sSO)
+
+F.Intrinsic.UI.ShowOpenFileDialog("","xls|*.xlsx|*.xls",,V.Local.sFile)
+F.Intrinsic.Control.If(V.Local.sFile,=,"***CANCEL***")
+	F.Intrinsic.Control.End
+
+F.Intrinsic.Control.EndIf
+Gui.frmUpload.txtUplFile.Text(V.Local.sFile)
+V.Global.sFileName.Set(V.Local.sFile)
+
+F.Intrinsic.Control.ExitSub
+
+
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("cmdbrwsfile_click_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_4293_UPLSOLn.gas",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.cmdbrwsfile_click.End
+
+Program.Sub.cmdclear_click.Start
+F.Intrinsic.Control.SetErrorHandler("cmdclear_click_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+
+
+'clear selections
+
+Gui.frmUpload.txtUplFile.Text("")
+F.Intrinsic.Control.ExitSub
+
+
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("cmdclear_click_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_4293_UPLSOLn.gas",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.cmdclear_click.End
+
+Program.Sub.cmdupload_click.Start
+F.Intrinsic.Control.SetErrorHandler("cmdupload_click_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+
+'In this sub we read the spreadsheet and load all data to UDT's for Sales Order Lines,  and format all to match upload format
+'then call subs to upload Sales Order lines
+
+V.Local.sFile.Declare(String)
+V.Local.iRow.Declare(Long)
+V.Local.i.Declare(Long)
+V.Local.sCol.Declare(String)
+V.Local.sSQL.Declare(String)
+V.Local.sSO.Declare(String)
+V.Local.sTemp.Declare(String)
+V.Local.sTempFull.Declare(String)
+V.Local.sPath.Declare(String)
+V.Local.sUplFile.Declare(String)
+V.Local.sSaveFile.Declare(String)
+V.Local.bExists.Declare(String)
+V.Local.sLine.Declare(String)
+V.Local.sRet.Declare(String)
+V.Local.sRet2.Declare(String)
+V.Local.iRet.Declare(Float)
+V.Local.iRet2.Declare(Float)
+V.Local.iRet3.Declare(Float)
+V.Local.sText.Declare(String)
+V.Local.sDate.Declare(String)
+V.Local.sCustomer.Declare(String)
+
+V.Local.bEnt.Declare(Boolean,False)
+V.Local.iUB.Declare(Long)
+V.Local.sRow.Declare(String)
+V.Local.sFileErr.Declare(String)
+V.Local.lActualLine.Declare(Long)
+
+'F.Intrinsic.String.Format(V.Ambient.Date,"MMDDYY",V.Local.sDate)
+
+
+
+
+V.Local.sFile.set(V.Screen.frmUpload!txtUplFile.Text)
+
+F.Intrinsic.Control.If(V.Screen.frmUpload!txtUplFile.Text,=,"")
+	F.Intrinsic.UI.Msgbox("Select a file to upload","")
+	F.Intrinsic.Control.ExitSub
+F.Intrinsic.Control.EndIf
+
+
+
+F.Intrinsic.String.LPad(Variable.Passed.000060,0,7,V.Local.sSO)
+
+V.Local.sCustomer.Set(Variable.Passed.GLOBAL)
+
+'Make sure order exists.
+F.Intrinsic.String.Concat("Select * from V_ORDER_HEADER Where ORDER_NO = '",V.Local.sSO,"'",V.local.ssql)
+F.ODBC.Connection!con.OpenRecordsetRO("rst",V.Local.sSQL)
+F.Intrinsic.Control.If(V.ODBC.con!rst.EOF,=,True)
+	F.Intrinsic.String.Concat("Sales Order ",V.Local.sSO," not found, order must be saved first.",V.Local.sRet)
+	F.Intrinsic.UI.Msgbox(V.Local.sRet,"Order Not Saved")
+	F.ODBC.con!rst.Close
+	F.Intrinsic.Control.ExitSub
+F.Intrinsic.Control.Else
+	F.ODBC.con!rst.Close
+	'make sure no lines exist
+	F.Intrinsic.String.Concat("select * from v_order_lines where order_no ='",V.Local.sSO,"'",V.Local.sSQL)
+	F.ODBC.Connection!con.OpenRecordsetRO("rst",V.Local.sSQL)
+	F.Intrinsic.Control.If(V.ODBC.con!rst.EOF,<>,True)
+		F.Intrinsic.UI.Msgbox("Sales Order has existing lines, Must be Sales Order with No Lines","Lines Exist")
+		F.ODBC.con!rst.Close
+		F.Intrinsic.Control.ExitSub
+	F.Intrinsic.Control.Else
+		F.ODBC.con!rst.Close
+		Gui.frmUpload..Visible(false)
+		F.Intrinsic.UI.InvokeWaitDialog("Loading Upload File....Please Wait","")
+		'Open Excel spreadsheet
+		F.Automation.MSExcel.CreateAppObject("MSExcel")
+		F.Automation.MSExcel.OpenWorkbook("MSExcel","Workbook",V.Local.sFile)
+		F.Automation.MSExcel.OpenWorksheet("Workbook","Worksheet",1)
+		F.Automation.MSExcel.RowCount("Worksheet",V.Local.iRow)
+		F.Intrinsic.String.Split(V.Local.sFile,"$!$",V.Local.sRow)
+		F.Intrinsic.Control.For(V.Local.i,4,V.Local.iRow,1)
+			Function.Automation.MSExcel.ReadRow("Worksheet",V.Local.i,6,8,V.Local.sRow)
+			
+			F.Intrinsic.UI.ChangeWaitStatus("Generating Sales Order Lines...",V.Local.i,V.Local.sRow.LBound,V.Local.sRow.UBound)
+			f.Intrinsic.Control.If(V.Local.sRow,<>,"*!**!*")
+				F.Intrinsic.String.Split(V.Local.sRow,"*!*",V.Local.sCol)
+				f.Intrinsic.Control.If(V.Local.sCol(1).trim,<>,"")
+'					Function.Intrinsic.String.GSSPARTSTRING(V.Local.sCol(1),"",V.Local.sCol(1))
+		
+					F.Intrinsic.String.RPad(V.Local.sCol(1)," ",20,V.Local.sRet)
+					F.Intrinsic.String.Build("{0}*!*{1}*!*{2}*!*{3}*!*{4}*!*{5}*!*{6}*!*{7}*!*{8}",V.Local.sCol(1),V.Local.sCol(2),V.Local.sCol(0),"","",V.Local.sSO,V.Local.sCustomer,v.Ambient.Date,"",V.Local.sRet)
+					F.Intrinsic.Variable.LoadUDTFromString(V.uGlobal.uCol,"Part*!*Qty*!*Description*!*UM*!*Price*!*Order_No*!*Customer*!*Item_Promise_DT*!*Customer_Part",V.Local.sRet,"$!$","*!*",V.Local.bEnt)
+		
+					V.Local.bEnt.Set(True)
+				F.Intrinsic.Control.EndIf
+			F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.Next(V.Local.i)
+	
+	F.Automation.Generic.DestroyObject("Worksheet")
+	F.Automation.Generic.DestroyObject("Workbook")
+	F.Automation.Generic.DestroyObject("MSExcel")
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.EndIf
+
+
+
+'format uCol (Sales order Lines) to match ORDADLN Upload Format
+'price
+F.Intrinsic.Control.For(V.Local.i,V.uGlobal.uCol.LBound,V.uGlobal.uCol.UBound,1)
+	F.Intrinsic.ui.ChangeWaitStatus("Creating Sales Order Upload",V.Local.i,V.uGlobal.uCol.LBound,V.uGlobal.uCol.UBound)
+
+'Check for part
+
+	F.Intrinsic.String.Build("select PART,PRODUCT_LINE,UM_Inventory,Amt_Cost from v_INVENTORY_MSTR where part = '{0}'",V.uGlobal.uCol(v.Local.i)!part,V.Local.sSQL)
+
+	F.ODBC.Connection!con.OpenLocalRecordsetRO("rst",V.Local.sSQL)
+	F.Intrinsic.Control.If(V.ODBC.con!rst.EOF,=,False)
+
+	F.Intrinsic.Math.ConvertToFloat(V.ODBC.con!rst.FieldVal!Amt_Cost,V.Local.iRet)
+	F.Intrinsic.Math.Round(V.Local.iRet,2,V.Local.iRet)
+	F.Intrinsic.String.ConvertToString(V.Local.iRet,V.Local.sRet)
+	
+	F.Intrinsic.String.IsInString(V.Local.iRet,".",True,V.Local.bExists)
+	F.Intrinsic.Control.If(V.Local.bExists,<>,True)
+		F.Intrinsic.String.Concat(V.Local.iRet,".00",V.Local.sRet)
+	F.Intrinsic.Control.EndIf
+	F.Intrinsic.String.Split(V.Local.sRet,".",V.Local.sText)
+	F.Intrinsic.String.Len(V.Local.sText(1),V.Local.iRet)
+	F.Intrinsic.Control.if(V.Local.iRet,=,1)
+		F.Intrinsic.String.RPad(V.Local.sText(1),"0",2,V.Local.sRet)
+		F.Intrinsic.String.Concat(V.Local.sText(0),V.Local.sRet,V.Local.sRet)
+	F.Intrinsic.Control.Else
+		F.Intrinsic.String.Concat(V.Local.sText(0),V.Local.sText(1),V.Local.sRet)
+	F.Intrinsic.Control.EndIf
+	F.Intrinsic.String.LPad(V.Local.sRet,"0",12,V.Local.sRet)
+	F.Intrinsic.String.RPad(V.Local.sRet,"0",16,V.Local.sRet)
+	V.uGlobal.uCol(v.Local.i)!Price.Set(V.Local.sRet)
+
+		'UM to uppercase
+		F.Intrinsic.String.UCase(V.ODBC.con!rst.FieldValTrim!UM_Inventory,V.Local.sRet)
+		V.uGlobal.uCol(v.Local.i)!UM.Set(V.Local.sRet)
+	' set PL
+		V.uGlobal.uCol(v.Local.i)!PL.Set(V.ODBC.con!rst.FieldValTrim!PRODUCT_LINE)
+	'pad line numbers to 3
+
+		F.Intrinsic.Math.Add(V.Local.lActualLine,1,V.Local.lActualLine)
+
+'		F.Intrinsic.Math.Add(V.Local.i,1,V.Local.iRet)
+		F.Intrinsic.String.ConvertToString(V.Local.lActualLine,V.Local.sRet)
+		F.Intrinsic.String.LPad(V.Local.sRet,"0",3,V.Local.sRet)
+		V.uGlobal.uCol(v.Local.i)!Line.Set(V.Local.sRet)
+	'quantity
+		F.Intrinsic.String.LPad(V.uGlobal.uCol(v.Local.i)!Qty,"0",9,V.Local.sRet)
+		F.Intrinsic.String.RPad(V.Local.sRet,"0",13,V.Local.sRet)
+		V.uGlobal.uCol(v.Local.i)!Qty.Set(V.Local.sRet)
+	F.Intrinsic.Control.Else
+		'delete part from UDT Load to File
+		Function.Intrinsic.Control.If(V.uGlobal.uError.UBound,=,-1)
+			V.Local.iUB.Set(0)
+			V.uGlobal.uError.Redim(0,0)
+		F.Intrinsic.Control.Else
+			F.Intrinsic.Math.Add(V.uGlobal.uError.UBound,1,V.Local.iUB)
+			V.uGlobal.uError.RedimPreserve(0,V.Local.iUB)
+		F.Intrinsic.Control.EndIf
+'F.Intrinsic.Debug.InvokeDebugger
+'F.Intrinsic.Debug.Stop
+		F.Intrinsic.Math.Add(V.Local.i,1,V.uGlobal.uError(v.Local.iUB)!Line)
+'		V.uGlobal.uError(v.Local.iUB)!Line.Set(V.Local.i)
+		V.uGlobal.uError(v.Local.iUB)!Part.Set(V.uGlobal.uCol(v.Local.i)!part)
+		
+		F.Intrinsic.Variable.UDTMultiFlag(V.uGlobal.uCol!part,V.uGlobal.uCol(v.Local.i)!part)
+	F.Intrinsic.Control.EndIf
+
+	F.ODBC.con!rst.Close
+	F.Intrinsic.Control.Next(V.Local.i)
+
+	F.Intrinsic.Variable.UDTDeleteFlagged(V.uGlobal.uCol)
+
+	F.Intrinsic.Control.If(V.uGlobal.uError.UBound,>=,0)
+'		F.Intrinsic.UI.Msgbox("Some lines has Error")
+		F.Intrinsic.Variable.UDTToString(V.uGlobal.uError,"Line*!*Part",v.Ambient.NewLine,V.Ambient.Tab,V.Local.sRow)
+		F.Intrinsic.String.Concat(V.Caller.FilesDir,"\RANORDERR.txt",V.Local.sFileerr)
+		F.Intrinsic.File.String2File(V.Local.sFileerr,V.Local.sRow)
+		Gui.frmUpload.cmdErr.Enabled(true)
+	F.Intrinsic.Control.EndIf
+
+
+F.Intrinsic.Control.If(V.uGlobal.uCol.UBound,>,-1)
+	F.Intrinsic.Control.CallSub(Salesorderlines)
+	F.Intrinsic.UI.ChangeCallerProperty(V.Passed.000037,"LOCK",1)
+F.Intrinsic.Control.Else
+	F.Intrinsic.UI.Msgbox("No Lines to Upload")
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.If(V.Screen.frmUpload!cmdUpload.Enabled,=,False)
+	F.Intrinsic.UI.Msgbox("Order Lines Upload completed")
+	F.Intrinsic.Control.CallSub(Frmupload_unload)
+F.Intrinsic.Control.Else
+	Gui.frmUpload.cmdUpload.Enabled(false)
+	F.Intrinsic.UI.Msgbox("some lines not uploaded")
+	F.Intrinsic.Control.CallSub(Cmderr_click)
+F.Intrinsic.Control.EndIf
+			
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("cmdupload_click_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_4293_UPLSOLn.gas",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.cmdupload_click.End
+
+Program.Sub.SalesOrderLines.Start
+F.Intrinsic.Control.SetErrorHandler("SalesOrderLines_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+
+'In this sub create sales order lines and call ORDADLN for upload
+V.Local.sParam.Declare(String)
+V.Local.sPath.Declare(String)
+V.Local.sTemp.Declare(String)
+V.Local.bExists.Declare(Boolean)
+V.Local.sTempFull.Declare(String)
+V.Local.sLenArray.Declare(String)
+V.Local.sLineArray.Declare(String)
+V.Local.sFormatArray.Declare(String)
+V.Local.i.Declare(Float)
+V.Local.iRet.Declare(String)
+V.Local.sSql.Declare(String)
+V.Local.sRet.Declare(String)
+V.Local.iLengthArray.Declare(long)
+V.Local.iFormatArray.Declare(long)
+
+'set length array
+
+'V.Local.sLenArray.Set("1*!*7*!*7*!*38*!*2*!*5*!*30*!*3*!*1*!*13*!*10*!*16*!*30*!*30*!*30*!*30*!*30*!*2")
+F.Intrinsic.String.Split("1*!*7*!*7*!*38*!*2*!*5*!*30*!*3*!*1*!*13*!*10*!*16*!*30*!*30*!*30*!*30*!*30*!*2","*!*",V.Local.iLengthArray)
+
+F.Intrinsic.String.Split(V.Local.sLenArray,"*!*",V.Local.sLenArray)
+'set Alignment array
+V.Local.sFormatArray.Set("0*!*0*!*0*!*0*!*0*!*0*!*0*!*11*!*0*!*11*!*11*!*11*!*0*!*0*!*0*!*0*!*0*!*0")
+'F.Intrinsic.String.split(V.Local.sFormatArray,"*!*",V.Local.sFormatArray)
+F.Intrinsic.String.split(V.Local.sFormatArray,"*!*",V.Local.iFormatArray)
+
+F.Intrinsic.String.Concat("LINESUPLOAD",V.Caller.Terminal,V.Caller.CompanyCode,V.Global.sFileName)
+F.Intrinsic.String.Concat(V.Caller.FilesDir,"\",V.Global.sFileName,V.Local.sPath)
+F.Intrinsic.File.Exists(V.Local.sPath,V.Local.bExists)
+F.Intrinsic.Control.If(V.Local.bExists,=,True)
+	F.Intrinsic.File.DeleteFile(V.Local.sPath)
+F.Intrinsic.Control.EndIf
+'Build TempFull String variable and create text file
+F.Intrinsic.Control.For(V.Local.i,V.uGlobal.uCol.LBound,V.uGlobal.uCol.UBound,1)
+	F.Intrinsic.ui.ChangeWaitStatus("Adding Sales Orders to Global Shop",V.Local.i,V.uGlobal.uCol.LBound,V.uGlobal.uCol.UBound)
+
+	F.Intrinsic.String.Build("O*!*{0}*!*{1}*!*{2}*!*{3}*!*{4}*!*{5}*!*{6}*!*{7}*!*{8}*!*{9}*!*{10}*!*{11}*!*{12}*!*{13}*!*{14}*!*{15}*!*{16}",V.uGlobal.uCol(v.Local.i)!Customer.Trim,V.uGlobal.uCol(v.Local.i)!Order_No.Trim,V.uGlobal.uCol(v.Local.i)!Part.Trim," ",V.uGlobal.uCol(v.Local.i)!PL.Trim,V.uGlobal.uCol(v.Local.i)!Description.Trim,V.uGlobal.uCol(v.Local.i)!Line.Trim,"L",V.uGlobal.uCol(v.Local.i)!Qty.Trim,"",V.uGlobal.uCol(v.Local.i)!Price,"","","","","",V.uGlobal.uCol(v.Local.i)!UM.Trim,V.Local.sTemp)
+	F.Intrinsic.String.Split(V.Local.sTemp,"*!*",V.Local.sTemp)
+'	F.Intrinsic.String.PositionalString(V.Local.sTemp,V.Local.sLenArray,V.Local.sFormatArray,V.Local.sRet)
+	F.Intrinsic.String.PositionalString(V.Local.sTemp,V.Local.iLengthArray,V.Local.iFormatArray,V.Local.sRet)
+	F.Intrinsic.String.Concat(V.Local.sTempFull,V.Local.sRet,V.Ambient.NewLine,V.Local.sTempFull)
+F.Intrinsic.Control.Next(V.Local.i)
+
+
+
+F.Intrinsic.File.String2File(V.Local.sPath,V.Local.sTempFull)
+
+'Call upload
+'activate when delivered
+
+
+V.Local.sParam.Set("")
+F.Intrinsic.String.Rpad(Variable.Caller.User," ",8,Variable.Local.sTemp)
+'F.Intrinsic.String.Concat(V.Local.sParam,V.Ambient.QuadQuote,Variable.Caller.CompanyCode,Variable.Local.sTemp,Variable.Local.sPath,V.Ambient.QuadQuote,Variable.Local.sParam)
+F.Intrinsic.String.Concat(V.Local.sParam,V.Ambient.DblQuote,Variable.Caller.CompanyCode,Variable.Local.sTemp,Variable.Local.sPath,V.Ambient.DblQuote,Variable.Local.sParam)
+F.Intrinsic.UI.ChangeWaitStatus("Adding Sales Order Lines...")
+F.Intrinsic.Task.Launchgsssync("ORDADCMD","-c",Variable.Local.sParam)
+
+
+
+F.Intrinsic.Control.For(V.Local.i,V.uGlobal.uCol.LBound,V.uGlobal.uCol.UBound,1)
+      F.Intrinsic.ui.ChangeWaitStatus("Adding Sales Orders to Global Shop",V.Local.i,V.uGlobal.uCol.LBound,V.uGlobal.uCol.UBound)
+	F.Intrinsic.String.RPad(V.uGlobal.uCol(v.Local.i)!Line,"0",4,V.Local.sRet)
+	F.Intrinsic.String.Build("select * from order_lines where order_no = '{0}' and record_no = '{1}'",V.uGlobal.uCol(v.Local.i)!Order_No,V.Local.sRet,V.Local.sSql)
+	F.ODBC.connection!con.OpenRecordsetRW("rst",V.Local.sSql)
+	F.Intrinsic.Control.If(V.ODBC.con!rst.EOF,=,False)
+			F.ODBC.con!rst.set!CUSTOMER_PART(V.uGlobal.uCol(v.local.i)!CUSTOMER_PART.Trim)
+			Function.Intrinsic.String.Format(V.uGlobal.uCol(v.local.i)!ITEM_PROMISE_DT,"yyyymmdd",Variable.local.sRet)
+			F.ODBC.con!rst.set!DATE_ITEM_PROM(Variable.local.sRet.Trim)
+			F.ODBC.con!rst.Update
+		F.ODBC.con!rst.Close
+	F.Intrinsic.Control.else
+		F.ODBC.con!rst.Close
+		F.Intrinsic.UI.Msgbox("Order Upload Incomplete, Delete Order if Lines Exist and Check File format and Try Again","Upload Incomplete")
+		F.Intrinsic.Control.End
+
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.Next(V.Local.i)
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("SalesOrderLines_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_4293_UPLSOLn.gas",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.SalesOrderLines.End
+
+Program.Sub.cmderr_click.Start
+F.Intrinsic.Control.SetErrorHandler("cmderr_click_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+
+
+V.Local.sFile.Declare(String)
+F.Intrinsic.String.Concat(V.Caller.FilesDir,"\RANORDERR.txt",V.Local.sFile)
+
+Function.Intrinsic.Task.ShellExec(0,"open",V.Local.sFile,"","",1)
+
+F.Intrinsic.Control.ExitSub
+
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("cmderr_click_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_4293_UPLSOLn.gas",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.cmderr_click.End
+
+Program.Sub.frmupload_unload.Start
+F.Intrinsic.Control.SetErrorHandler("frmupload_unload_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+
+
+
+
+F.ODBC.Connection!con.Close
+F.Intrinsic.Control.End
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("frmupload_unload_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: NewScript.gas",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.frmupload_unload.End
+
+Program.Sub.testing.Start
+
+'--------------------------------Testing
+V.Local.sFile.Declare(string)
+V.Local.iRow.Declare(long)
+V.Local.sRow.Declare(string)
+V.Local.sCol.Declare(string)
+v.Local.i.Declare(long)
+V.Local.sFilename.Declare(string)
+
+		
+		
+'F.Intrinsic.Debug.InvokeDebugger
+
+
+		V.Local.sFile.set("Y:\Quote\Current\PORCVD 4293 Quote -8509 AXID1936 - Sales Order Upload Custom Fast Manufacturing\Copy of North Canton OH.xlsx")
+		'Open Excel spreadsheet
+		F.Automation.MSExcel.CreateAppObject("MSExcel")
+		F.Automation.MSExcel.OpenWorkbook("MSExcel","Workbook",V.Local.sFile)
+		F.Automation.MSExcel.OpenWorksheet("Workbook","Worksheet",1)
+		F.Automation.MSExcel.RowCount("Worksheet",V.Local.iRow)
+		
+		
+'		F.Automation.MSExcel.DestroyAllObjects("MSExcel","Workbook","Worksheet")
+
+	f.Intrinsic.Debug.EnableLogging 
+
+'		F.Automation.MSExcel.ReadSpreadsheet(V.Local.sFile,8,V.Local.iRow,V.Local.sFile)
+'		F.Automation.MSExcel.ReadSpreadsheet(V.Local.sFile,8,20,V.Local.sFile)
+F.Intrinsic.Debug.Stop
+		F.Intrinsic.String.Split(V.Local.sFile,"$!$",V.Local.sRow)
+		
+		F.Intrinsic.Control.For(V.Local.i,4,V.Local.iRow,1)
+			Function.Automation.MSExcel.ReadRow("Worksheet",V.Local.i,6,8,V.Local.sRow)
+			f.Intrinsic.Control.If(V.Local.sRow,<>,"*!**!*")
+				F.Intrinsic.String.Split(V.Local.sRow,"*!*",V.Local.sCol)
+				f.Intrinsic.Control.If(V.Local.sCol(1).trim,<>,"")
+					f.Intrinsic.Debug.setLA(V.Local.sRow)
+					f.Intrinsic.Debug.setLA(V.Local.i)
+					f.Intrinsic.Debug.setLA(V.Local.sCol(0))
+					f.Intrinsic.Debug.setLA(V.Local.sCol(1))
+					f.Intrinsic.Debug.setLA(V.Local.sCol(2))
+					f.Intrinsic.Debug.setLA("******")
+				f.Intrinsic.Control.endif
+			f.Intrinsic.Control.endif
+		f.Intrinsic.Control.Next(V.Local.i)
+		
+		F.Automation.Generic.DestroyObject("Worksheet")
+		F.Automation.Generic.DestroyObject("Workbook")
+		F.Automation.Generic.DestroyObject("MSExcel")
+		
+		F.Intrinsic.Debug.Stop
+		f.Intrinsic.UI.Msgbox("END")
+		f.Intrinsic.Control.End
+
+'--------------------------------Testing	
+Program.Sub.testing.End
+
+Program.Sub.Comments.Start
+${$0$}$GCG_4293_UPLSOLn$}$RAN$}$2/6/2017 3:46:55 PM$}$False
+${$3$}$0$}$$}$0$}$-1$}$$}$12:00:00 AM$}$SO Line Upload
+Program.Sub.Comments.End
+
